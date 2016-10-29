@@ -1,0 +1,12 @@
+{
+  "name": "bourbon_template",
+  "version": "0.0.1",
+  "description": "bourbon 4.2.7 starter",
+  "main": "index.html",
+  "scripts": {
+  	"sass": "sass --watch src/sass/styles.scss:css/styles.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Bullock @ Mot Web Dev",
+  "license": "MIT"
+}

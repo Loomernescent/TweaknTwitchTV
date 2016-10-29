@@ -1,0 +1,200 @@
+body {
+	
+}
+
+  $texture-top-background: lighten(#357, 1%);
+  $texture-bottom-background: darken(#135, 10%);
+
+  $hover-top-background: lighten(#365, 1%);
+  $hover-bottom-background: darken(#143, 10%);
+
+  $metal-top-background: lighten(#444445, 1%);
+  $metal-bottom-background: darken(#333334, 10%);
+
+.wrapper {
+	@include outer-container(80%);
+	@include clearfix;
+} 
+
+.screen {
+	@include media($phone) {
+		@include span-columns(6);
+		@include shift(0)
+	}
+	@include texture(180deg, $metal-top-background, $metal-bottom-background, 9, 1);
+
+	border-radius: 10px;
+	padding: 1em;
+	border: solid 2px #111;
+	min-height: 200px;
+	@include span-columns(10);
+	@include shift(1);
+
+	.texture-normal {
+		position: relative;
+		border: solid 1px #000;
+		border-radius: 10px;
+		height: 240px;
+	}
+
+
+
+	.tweak {
+		opacity: .7;
+/*		width: 50%;*/
+		position: absolute;
+		top: 15px;
+		right: 0;
+    	left: 0;
+    	margin: auto;
+	}
+
+/*	img {
+		width: 100%;
+	}*/
+}
+
+	.highlight {
+		@include radial-gradient(circle at 30% 40%, #eee 10%, #1e5799 30%, rgba(0, 0, 0, .01));
+		position: absolute;
+		right: 0;
+    	left: 0;
+    	margin: 1em auto;
+		width: 90%;
+		height: 220px;
+		border-radius: 50px;
+/*		background: #EEE;*/
+		opacity: .5;
+	}
+
+.control {
+/*	font-family: 'silkscreennormal';*/
+
+	@include media($phone) {
+		@include span-columns(6);
+		@include shift(0)
+	}
+	@include span-columns(10);
+	@include shift(1);
+
+	.navigation {
+		@include texture(180deg, $metal-top-background, $metal-bottom-background, 9, 1);
+		border: solid 2px #111;
+		border-radius: 10px;	
+	}
+
+}
+
+.channels {
+	@include media($phone) {
+		@include span-columns(6);
+		@include shift(0)
+	}
+	@include span-columns(10);
+	@include shift(1);
+	background: #222;
+	min-height: 200px;
+	height: 100%;
+	border: solid 2px #111;
+	border-radius: 10px;
+
+	.twitch-list {	
+		padding: 0;
+		margin: 0;
+	}
+
+	li {
+		/*background: #555;*/
+		font-family: 'silkscreennormal';
+		color: #ddd;
+		border-radius: 10px;
+		border: solid 3px #000;
+		list-style: none;
+	
+		h4 {
+			display: inline-block;
+			margin-left: 1em;
+			margin-right: 1em;
+		}
+
+		p {
+			display: inline-block;
+		}
+
+		.logo {
+			opacity: .4;
+			float: right;
+			margin-top: 0;
+			margin-right: 15px;
+			border-radius: 25px;
+			border: solid 2px #111;
+			height: 61px;
+			/*width: 50px;*/
+			display: inline-block;
+		}
+
+		.status {
+			float: right;
+			margin-top: 21px;
+			margin-right: 8px;
+		}
+
+		.grey {
+			color: #666;
+		}
+
+		.green {
+			color: #0D4;
+		}
+
+		.error {
+			color: #745;
+		}
+
+		.led {
+			display: inline-block;
+			@include size(12px);
+			background: rgba(250, 0, 0, .2);
+			border: solid 1px rgba(20, 0, 0, .6);			
+		}
+	}
+}
+
+.texture {
+
+/*  height: 5em;*/
+/*  width: 100%;*/
+
+  .texture-normal {
+    // gradient color 1, gradient color 2, gradient angle, texture-number, 0=inverted or 1=normal
+    @include texture(180deg, $texture-top-background, $texture-bottom-background, 85, 1);
+    float: left;
+/*    height: 5em;*/
+    width: 100%;
+  }
+}
+
+.buttons {
+
+/*  height: 5em;*/
+/*  width: 100%;*/
+
+  .texture-button {
+    // gradient color 1, gradient color 2, gradient angle, texture-number, 0=inverted or 1=normal
+    @include texture(180deg, $texture-top-background, $texture-bottom-background, 85, 1);
+    float: left;
+/*    height: 5em;*/
+    width: 100%;
+  }
+
+
+
+  .texture-button:hover {
+    // gradient color 1, gradient color 2, gradient angle, texture-number, 0=inverted or 1=normal
+    @include texture(180deg, $hover-top-background, $hover-bottom-background, 85, 1);
+    float: left;
+/*    height: 5em;*/
+    width: 100%;
+  }
+}
+
