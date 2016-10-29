@@ -162,7 +162,7 @@
 			    if (response.stream !== null) {
 					var status = "online";
 					var logo = response.stream.channel.logo;
-					var followers = "Followers: " + response.stream.channel.followers;	
+					var followers = "Fol: " + response.stream.channel.followers;	
 					self.lusers.push(new Geek(name, logo, link, followers, status));	
 				} else {
 					var status = "offline";

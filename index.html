@@ -26,9 +26,6 @@
 	<div class="control">
 <header class="navigation" role="banner">
   <div class="navigation-wrapper">
-    <a href="javascript:void(0)" class="logo">
-      <img src="img/tweak.svg" alt="Logo Image">
-    </a>
     <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
     <nav role="navigation">
       <ul id="js-navigation-menu" class="navigation-menu show">
@@ -54,10 +51,9 @@
 		<ul class="buttons twitch-list" data-bind="foreach: lusers">
 			<a href="" data-bind="attr: {href: link}"><li class="texture-button">
         <h4 class="" data-bind="text: name"></h4>
-        <span class="" data-bind="text: followers"></span>
-        <span class="status" data-bind="text: status, css: ledIndicator()"></span>
         <img class="logo" src="" data-bind="visible: logo !== null, attr: {src: logo}">
-       
+        <span class="status" data-bind="text: status, css: ledIndicator()"></span>        
+        <span class="followers" data-bind="text: followers"></span>
       </li>
       </a>
 		</ul>
