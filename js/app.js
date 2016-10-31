@@ -2,87 +2,32 @@
 
 
 
-// $( document ).ready(function() {
+$( document ).ready(function() {
 
 	var losers = ["freecodecamp", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
 
-	var model = {
-		getData: function(query) {		
-			for (var i = 0; i < losers.length; i++) {
-				model.getSearch(losers[i], query);
-			}				
-		},
-		getSearch: function(search, query) {
-			console.log(query)		
-			$.ajax({
-				type: "GET",
-				url: 'https://api.twitch.tv/kraken/streams/' + search ,
-				headers: {
-				"Client-ID": "56xe1jteqiv0bnmryzvols9c6bru51i"
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					if (errorThrown == "Not Found") {
-						my.viewModel.addLusers(errorThrown, search);	
-					} else {
-						my.viewModel.addLusers("Sorry an error has occurred", search)
-					}
-				},
-				// dataFilter: function(data) {
-				//     var data = JSON.parse(data);
-				//     // console.log(data)
-				//     // delete data.redirect;
-				//     return JSON.stringify(data);
-				// },
-				success: function(data){
-					console.log(query);
-					// return on
-					if(query === "On") {
-						if(data.stream !== null) {
-							my.viewModel.addLusers(data, search);							
-						}
-					// return off
-					} else if(query === "Off") {
-						if(data.stream === null) {
-							my.viewModel.addLusers(data, search);							
-						}
-					//return all
-					} else {
-						my.viewModel.addLusers(data, search);						
-					}
+	var tweakTimer; 
 
-				}
-			});
-		}
-	}
-
-	function Geek(name, logo, link, followers, status) {
-
-		var self = this;
-		self.name = name;
-		self.logo = logo;
-		self.link = "http://player.twitch.tv/?channel=" + name; // this needs adjustment
-		self.followers = followers;
-		self.status = status;
-
-		self.ledIndicator = ko.computed(function(){
-			if(self.status === "online") {
-				return "green";
-			} else if (self.status === "offline"){
-				return "grey";
-			} else {
-				return "error";
-			}
-		});
-		
+	// returns timer to tweakTimer to start and stop animation
+	var timer = function() {
+		return setInterval(function() {
+				// console.log(tweak.cycle)
+				if(tweak.cycle < 8) {
+					tweak.animate();	
+				} else {
+					tweak.stop();
+				}				
+		}, 140);		
 	}
 
 	function Sprite(x, y) {
+		this.cycle = 0;
 		this.index = 1;
 		this.count = 1;
 		this.x = x;
 		this.y = y;
 		this.imgWidth = 840;
-		this.imgHeight = 166; // maybe not needed? 
+		this.imgHeight = 166; 
 		this.xpos = 0;
 		this.ypos = 0;
 		this.numFrames = 4;
@@ -96,7 +41,7 @@
             var animHtml = '<div class="sprite tweak"></div>';
 			this.animElement = $(animHtml);    
 			this.animElement.css({
-				"background-image": 'url("img/Tweak_SpriteSheet.png")', //' linear-gradient(90deg, rgba(170,87,69, 0) 0%,  #aa5745 35%)', 
+				"background-image": 'url("img/Tweak_SpriteSheet.png")',  
 				backgroundPosition: (-this.xpos)+"px "+(-this.ypos)+"px",
 				width: this.frameSize,
 				height: this.imgHeight,
@@ -118,46 +63,117 @@
             this.index = this.index + this.count;
             //if our index is higher than our total number of frames, we're at the end and better start over.
 	            if(this.index >= this.numFrames) {
-	            //	console.log("reversed");
 	            	this.reverse = true;
 	                this.count *= -1; 
 	                this.frameSize *= -1;
-			    } else if (this.index <= 1) {
-	            //	console.log("un-reversed");			    	
+			    } else if (this.index <= 1) {		    	
 			    	this.reverse = false;
 	                this.count *= -1; 
 	                this.frameSize *= -1;
 			    }
+			this.cycle++;
 		}
 
+	Sprite.prototype.stop = function() {
+		clearInterval(tweakTimer);
+		this.cycle = 0;
+		this.index = 1;
+		this.animElement.css({
+			backgroundPosition: 0 +"px "+ 0 +"px"
+		});
+
+	}
+
+	// Geek / Twitcher Constructor
+	function Geek(name, logo, link, followers, status) {
+
+		var self = this;
+		self.name = name;
+		self.logo = logo;
+		if(link !== null) {
+			self.link = "http://player.twitch.tv/?channel=" + name; // this needs adjustment			
+		} else {
+			self.link = "https://www.twitch.tv/";
+		}
+
+		self.followers = followers;
+		self.status = status;
+
+		self.ledIndicator = ko.computed(function(){
+			if(self.status === "online") {
+				return "green";
+			} else if (self.status === "offline"){
+				return "grey";
+			} else {
+				return "error";
+			}
+		});
+		
+	}
+
+	// Data/Model Object
+	var model = {
+		getData: function(query) {		
+			for (var i = 0; i < losers.length; i++) {
+				model.getSearch(losers[i], query);
+			}				
+		},
+		getSearch: function(search, query) {
+			// console.log(query)		
+			$.ajax({
+				type: "GET",
+				url: 'https://api.twitch.tv/kraken/streams/' + search ,
+				headers: {
+				"Client-ID": "56xe1jteqiv0bnmryzvols9c6bru51i"
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					if (errorThrown == "Not Found") {
+						my.viewModel.addLusers(errorThrown, search);	
+					} else {
+						my.viewModel.addLusers("Sorry an error has occurred", search)
+					}
+				},
+				success: function(data){
+					// console.log(query);
+					// return on
+					if(query === "On") {
+						if(data.stream !== null) {
+							my.viewModel.addLusers(data, search);							
+						}
+					// return off
+					} else if(query === "Off") {
+						if(data.stream === null) {
+							my.viewModel.addLusers(data, search);							
+						}
+					//return all
+					} else {
+						my.viewModel.addLusers(data, search);						
+					}
+				}
+			});
+		}
+	}
 
 
-	//Will receive the result of all client authorizations: either an access token or a failure message. This must exactly match the redirect_uri parameter passed to the authorization endpoint. 
-	// When testing locally, you can set this to http://localhost.
-
-	// https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=56xe1jteqiv0bnmryzvols9c6bru51i&redirect_uri=http://localhost
-	         
-
-
-	var clientID = "56xe1jteqiv0bnmryzvols9c6bru51i";
-
-
+	// Knockout View Model
 	function AppViewModel() {
 		var self = this;
-		self.timer = setInterval(function() {
-				tweak.animate();
-		}, 140);
 
 		self.lusers = ko.observableArray();
 
+		self.safeObservable = function(initialValue) {
+		  var result = ko.observable(initialValue);
+		  result.safe = ko.dependentObservable(function() {
+		    return result() || {};
+		  });
 
-		self.addLusers = function(response, search) {
-			console.log(response);
-			// console.log(query + " " + search);		
-				var name = search;
+		  return result;
+		};
+
+		self.addLusers = function(response, search) {	
+			var name = search;
 			if(response !== "Not Found" && response !== "Sorry an error has occurred") {
 				var link = response["_links"]["channel"];
-				// console.log(response.stream);
 
 			    if (response.stream !== null) {
 					var status = "online";
@@ -172,54 +188,32 @@
 				var status = response;
 				self.lusers.push(new Geek(name, null, null, null, status));
 			}
-			clearInterval(my.viewModel.timer);
-			tweak.animElement.css({
-				backgroundPosition: 0 +"px "+ 0 +"px"
-			});
-			console.dir(tweak);
 		}
 			
 		self.update = function(data, event) {
 			self.lusers.splice(0, self.lusers().length);
-			console.dir(event.target.text);
 			model.getData(event.target.text);
-			self.timer = setInterval(function() {
-				tweak.animate();
-			}, 140);
-
-
-			
+			tweakTimer = timer();		
 		}
-
-		// self.on = function(data, event) {
-		// 	model.getData(event.target.text);
-		// 	// self.lusers.splice(0, self.lusers().length);
-		// 	// model.getData(event.target.text);
-		// 	var newArr = self.lusers().filter(function(elem){
-		// 		return elem.status === "online";
-		// 	})
-		// 	console.log(newArr);
-
-		// }
 
 		self.search = function() {
 			self.lusers.splice(0, self.lusers().length);
 			model.getSearch($('.search').val(), "All");
+			tweakTimer = timer();
 		}
 
 	}
 
-	my = { viewModel: new AppViewModel() };
+	// put viewModel into var my so its accessable from the console
+	var my = { viewModel: new AppViewModel() };
 	ko.applyBindings(my.viewModel);
 
 	var tweak = new Sprite(0, 30);
+	tweakTimer = timer();
+	console.log(tweakTimer);
     
 	model.getData("All");
-	// setInterval(function() {
 
-	// 	tweak.animate();
 
-	// }, 140);
-
-// });
+});
 

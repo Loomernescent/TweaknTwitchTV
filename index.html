@@ -49,6 +49,7 @@
 	</div>
 	<div class="channels">
 		<ul class="buttons twitch-list" data-bind="foreach: lusers">
+<!--     data-bind="text: selectedItem() ? selectedItem().name() : 'unknown'" -->
 			<a href="" data-bind="attr: {href: link}"><li class="texture-button">
         <h4 class="" data-bind="text: name"></h4>
         <img class="logo" src="" data-bind="visible: logo !== null, attr: {src: logo}">

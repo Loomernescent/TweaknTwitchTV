@@ -9,5 +9,5 @@
 // $visual-grid-color: lighten(#FFF0E8, 3%);
 
 
-$tablet: new-breakpoint(min-width 768px max-width 1024px 6);
+$tablet: new-breakpoint(min-width 768px max-width 1024px 12);
 $phone: new-breakpoint(max-width 767px 6);
